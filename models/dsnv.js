@@ -53,6 +53,7 @@ function DSNV() {
     if (index !== -1) {
       // update 
       this.arr[index] = nv;
+      alert("CẬP NhẬT NHÂN VIÊN THÀNH CÔNG ");
     }
   };
 

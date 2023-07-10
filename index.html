@@ -197,9 +197,11 @@
 								</div>
 								<input type="text" name="tk" id="tknv" class="form-control input-sm"
 									placeholder="Tài khoản">
+									
 							</div>
+							<div class="text-danger"> (*) vui lòng nhập tài khoản   </div>
 
-							<span class="sp-thongbao" id="tbTKNV"></span>
+							<span class="sp-thongbao" id="tbTKNV"> </span>
 						</div>
 
 						<div class="form-group">
@@ -209,6 +211,12 @@
 								</div>
 								<input type="name" name="name" id="name" class="form-control input-sm"
 									placeholder="Họ và tên">
+							</div>
+
+							<div 
+							id="txtErrorTK" 
+							class="text-danger" 
+							style="display: none;">    
 							</div>
 							<span class="sp-thongbao" id="tbTen"></span>
 						</div>
@@ -222,6 +230,12 @@
 									placeholder="Email">
 							</div>
 
+							<div 
+							id="txtErrorEmail" 
+							class="text-danger" 
+							style="display: none;">    
+							</div>
+
 							<span class="sp-thongbao" id="tbEmail"></span>
 						</div>
 
@@ -233,6 +247,12 @@
 								<input type="password" name="password" id="password" class="form-control input-sm"
 									placeholder="Mật khẩu">
 							</div>
+							<div 
+							id="txtErrorMatKhau" 
+							class="text-danger" 
+							style="display: none;">    
+							</div>
+							
 							<span class="sp-thongbao" id="tbMatKhau"></span>
 						</div>
 
@@ -245,6 +265,12 @@
 									placeholder="Ngày làm">
 							</div>
 
+							<div 
+							id="txtErrorNgayLam" 
+							class="text-danger" 
+							style="display: none;">    
+							</div>
+						
 							<span class="sp-thongbao" id="tbNgay"></span>
 						</div>
 						
@@ -256,6 +282,13 @@
 								<input type="text" name="luongCB" id="luongCB" class="form-control input-sm"
 									placeholder="Lương cơ bản">
 							</div>
+
+							<div 
+							id="txtErrorLuongCB" 
+							class="text-danger" 
+							style="display: none;">    
+							</div>
+
 							<span class="sp-thongbao" id="tbLuongCB"></span>
 						</div>
 						<div class="form-group">
@@ -270,6 +303,12 @@
 									<option value="Nhân viên">Nhân viên</option>
 								</select>
 							</div>
+							
+							<div 
+							id="txtErrorChucVu" 
+							class="text-danger" 
+							style="display: none;">    
+							</div>
 
 							<span class="sp-thongbao" id="tbChucVu"></span>
 						</div>
@@ -281,6 +320,13 @@
 								<input type="text" name="gioLam" id="gioLam" class="form-control input-sm"
 									placeholder="Giờ làm">
 							</div>
+
+							<div 
+							id="txtErrorGioLam" 
+							class="text-danger" 
+							style="display: none;">    
+							</div>
+
 							<span class="sp-thongbao" id="tbGiolam"></span>
 						</div>
 

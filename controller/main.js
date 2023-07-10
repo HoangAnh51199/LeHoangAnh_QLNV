@@ -29,30 +29,40 @@ function layThongTinNV() {
 
 
 
+  /**
+   * validation
+   */
+  //flag <=> tạo cờ (boolean)
+  var isvalid = true;
+
+  if (isvalid) { //true tạo đối tượng 
+
+    //Tạo đối tượng sv từ lớp đối tượng nhanVien
+    var nv = new NhanVien(
+      taiKhoan,
+      tenNV,
+      email,
+      matKhau,
+      ngayLam,
+      luongCoBan,
+      chucVu,
+      gioLam,
 
 
-  //Tạo đối tượng sv từ lớp đối tượng nhanVien
-  var nv = new NhanVien(
-    taiKhoan,
-    tenNV,
-    email,
-    matKhau,
-    ngayLam,
-    luongCoBan,
-    chucVu,
-    gioLam,
+    );
 
-
-  );
-
-  //tinh DTB
-  nv.tinhtongLuong();
-  nv.xepLoai();
+    //tinh DTB
+    nv.tinhtongLuong();
+    nv.xepLoai();
 
 
 
-  console.log(nv.xepLoai());
-  return nv;
+    console.log(nv.xepLoai());
+    return nv;
+  };
+
+  return null; //khi validatin sai
+
 }
 
 
@@ -65,13 +75,15 @@ function layThongTinNV() {
 function themNhanVien() {
   var nv = layThongTinNV();
   console.log(nv);
+  if (nv) { // khác null hoặc có data dom  thì thực hiện
+    dsnv.themNV(nv);
 
-  dsnv.themNV(nv);
-
-  console.log(dsnv.arr);
-  renderTable(dsnv.arr);//render danh sach ra ngoai table
-  setLocalStorage();//lưu danh sach xuong local storage
+    console.log(dsnv.arr);
+    renderTable(dsnv.arr);//render danh sach ra ngoai table
+    setLocalStorage();//lưu danh sach xuong local storage
+  }
 }
+
 
 function renderTable(data) {
   var content = "";
@@ -85,7 +97,7 @@ function renderTable(data) {
      <td>${nv.email}</td>
      <td>${nv.ngayLam} </td>
      <td>${nv.chucVu} </td>
-     <td>${nv.tongLuong.toLocaleString('it-IT', {style : 'currency', currency : 'VND'})} </td>
+     <td>${nv.tongLuong.toLocaleString('it-IT', { style: 'currency', currency: 'VND' })} </td>
      <td>${nv.loai}</td>
      <td>
      <button class="btn btn-info" onclick="suaNV('${nv.taiKhoan}')">Sửa</button>
@@ -115,7 +127,7 @@ function suaNV(taikhoan) {
   //console.log(taikhoan);
   var nv = dsnv.layThongTinChiTietNV(taikhoan);
   console.log(nv);
-  if (nv) { // nếu tìm thấy data thì thực hiện tiếp 
+  if (nv) { // nếu tìm thấy data dom thì thực hiện tiếp 
     //dom tới các thẻ input => show info nv
     var callbuttonThem = getEle("btnThem");
     callbuttonThem.click(); //mở from nhập liệu khi bấm nút button  sửa 
@@ -137,6 +149,7 @@ function suaNV(taikhoan) {
     //dom btnthemnv => hide 
     getEle("btnThemNV").style.display = "none";
   }
+
 }
 
 /**
@@ -146,11 +159,16 @@ function suaNV(taikhoan) {
 getEle("btnCapNhatNV").onclick = function () {
   //lấy thông tin user
   var nv = layThongTinNV();//lấy data thông tin mới sửa của nhan vien đó 
-  console.log(nv); // xem thông tin mới sửa lại
-  dsnv.capNhatNV(nv); //functon capnhat ben dsnv.js
-  renderTable(dsnv.arr); // render lại màn hình cập nhật du lieu mới 
-  setLocalStorage(); // lưu vào local storage
-}
+  if(nv){ // khác null hoặc có data dom thì thực hiện
+    console.log(nv); // xem thông tin mới sửa lại
+    dsnv.capNhatNV(nv)  //functon capnhat ben dsnv.js
+  
+    renderTable(dsnv.arr); // render lại màn hình cập nhật du lieu mới 
+    setLocalStorage(); // lưu vào local storage
+    getEle("btnDong").click(); //out ra
+  }
+
+};
 
 
 /**
@@ -163,11 +181,11 @@ getEle("btnCapNhatNV").onclick = function () {
 // console.log(213);
 // }); //keyup có thể thay hành động click ke tiep function()
 
-function SearchNV () {
+function SearchNV() {
   // console.log(213);
-  var txtSearch =getEle("txtSearch").value;
-   console.log(txtSearch);
-  var mangTimKiem=dsnv.timKiemNV(txtSearch); // mảngtkiem chứa các đối tượng nv đang tìm
+  var txtSearch = getEle("txtSearch").value;
+  console.log(txtSearch);
+  var mangTimKiem = dsnv.timKiemNV(txtSearch); // mảngtkiem chứa các đối tượng nv đang tìm
   console.log(mangTimKiem);
   renderTable(mangTimKiem);//render ra màn hình table
 }
