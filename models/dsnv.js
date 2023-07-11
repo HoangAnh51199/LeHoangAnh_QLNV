@@ -4,6 +4,7 @@ function DSNV() {
 
   this.themNV = function (nv) {
     this.arr.push(nv);
+    alert("THÊM NHÂN VIÊN THÀNH CÔNG ");
   };
 
   this._timVitri = function (taiKhoan) {

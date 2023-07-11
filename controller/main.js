@@ -2,8 +2,9 @@
 
 //global
 var dsnv = new DSNV();
-
+var validation = new Validation();
 getLocalStorage();// mỗi lần reload web => gọi lại hàm getLocalSrorage để lấy data
+
 
 
 function getEle(id) {
@@ -12,7 +13,7 @@ function getEle(id) {
 
 
 
-function layThongTinNV() {
+function layThongTinNV(isADD) { //thêm isADD :true là thêm data,false là cập nhật
 
 
   /**
@@ -31,9 +32,115 @@ function layThongTinNV() {
 
   /**
    * validation
+   * isvalid true nhập data đúng ngược lại là false trương hợp tkhoan:isvalid =false ,tên:isvalid = true ,isvalid cuối cùng dc thay thế = true nên tính ra true hết là sai(chỉ quan tâm giá trị cuối củng nên thay bằng dấu isvadlid &=) 
    */
   //flag <=> tạo cờ (boolean)
   var isvalid = true;
+
+  if (isADD) {//ktra bien isADD true làm trong {} ,false bỏ qua
+    //validation taiKhoan
+    isvalid &= validation.kiemtraRong(taiKhoan, "txtErrorTK", "(*) vui lòng nhập tài khoản") &&
+      validation.kiemtraDodaiKyTu(
+        taiKhoan,
+        "txtErrorTK",
+        "(*) vui long nhap  tu 4-6 ký số ",
+        4,
+        6
+      ) &&
+      validation.kiemtraMaNVTonTai(
+        taiKhoan,
+        "txtErrorTK",
+        "(*) mã nhân viên đã tồn tại",
+        dsnv.arr // biến list nv
+      );
+  }
+
+
+
+  //vd:isvalid = false kế tiếp true isvalid =false && true =false cuối cùng ,có 1 cái false thì ko nhân data nhanthongtinnhanvien 
+
+
+  isvalid &= validation.kiemtraRong(
+    tenNV,
+    "txtErrorHoTen",
+    "(*) vui lòng nhập tên nhân viên"
+  ) &&
+    validation.kiemtraChuoiKiTu(
+      tenNV,
+      "txtErrorHoTen",
+      "(*) vui long nhập đúng chuỗi ký tự",
+
+    );
+
+
+  isvalid &= validation.kiemtraRong(
+    email,
+    "txtErrorEmail",
+    "(*) vui lòng nhập email "
+  ) &&
+    validation.checkPattern(
+      email,
+      "txtErrorEmail",
+      "(*) vui lòng nhập email đúng dịnh dạng",
+      /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
+    );
+
+
+  isvalid &= validation.kiemtraRong(
+    matKhau,
+    "txtErrorMatKhau",
+    "(*) vui lòng nhập mật khẩu"
+  ) &&
+    validation.checkPattern(
+      matKhau,
+      "txtErrorMatKhau",
+      "(*) vui lòng nhập mật khẩu đúng định dạng",
+      /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{0,}$/
+    );
+
+  isvalid &= validation.kiemtraRong(
+    ngayLam,
+    "txtErrorNgayLam",
+    "(*) vui lòng nhập ngày làm"
+  );
+
+  isvalid &= validation.kiemtraRong(
+    luongCoBan,
+    "txtErrorLuongCB",
+    "(*) vui lòng nhập lương cơ bản"
+  ) &&
+    validation.kiemtraLuongVaSoGioLam(
+      luongCoBan,
+      "txtErrorLuongCB",
+      "(*) vui lòng nhập trong khoảng 1tr -20 tr",
+      1e6,
+      20e6
+
+    );
+
+  isvalid &= validation.kiemtraChucVu(
+    "chucvu",
+    "txtErrorChucVu",
+    "(*) vui lòng nhập chức vụ"
+  );
+
+  isvalid &= validation.kiemtraRong(
+    gioLam,
+    "txtErrorGioLam",
+    "(*) vui lòng nhập giờ làm"
+  ) &&
+    validation.kiemtraLuongVaSoGioLam(
+      gioLam,
+      "txtErrorGioLam",
+      "(*) vui lòng nhập giờ làm trong khoảng 80-200 h/1 tháng",
+      80,
+      200
+    );
+
+
+
+
+
 
   if (isvalid) { //true tạo đối tượng 
 
@@ -65,7 +172,11 @@ function layThongTinNV() {
 
 }
 
+function nutMoFormNhapLieu() {
 
+  getEle("tknv").disabled = false;// thoát block tài khoản phần input đang bị khóa xám 
+  getEle("formNhap").reset();//reset form về ban đầu trống input
+}
 
 
 
@@ -73,7 +184,9 @@ function layThongTinNV() {
  * Them NV
  */
 function themNhanVien() {
-  var nv = layThongTinNV();
+
+
+  var nv = layThongTinNV(true); //true cho biến isADD sẽ thực hiên validation
   console.log(nv);
   if (nv) { // khác null hoặc có data dom  thì thực hiện
     dsnv.themNV(nv);
@@ -81,6 +194,7 @@ function themNhanVien() {
     console.log(dsnv.arr);
     renderTable(dsnv.arr);//render danh sach ra ngoai table
     setLocalStorage();//lưu danh sach xuong local storage
+    getEle("btnDong").click(); //out form ra 
   }
 }
 
@@ -158,14 +272,16 @@ function suaNV(taikhoan) {
 
 getEle("btnCapNhatNV").onclick = function () {
   //lấy thông tin user
-  var nv = layThongTinNV();//lấy data thông tin mới sửa của nhan vien đó 
-  if(nv){ // khác null hoặc có data dom thì thực hiện
+  var nv = layThongTinNV(false);//lấy lại data mới thông tin mới sửa của nhan vien đó ,false của biến isADD bỏ qua validation ktra ký tự
+  if (nv) { // khác null hoặc có data dom thì thực hiện
     console.log(nv); // xem thông tin mới sửa lại
     dsnv.capNhatNV(nv)  //functon capnhat ben dsnv.js
-  
+
     renderTable(dsnv.arr); // render lại màn hình cập nhật du lieu mới 
     setLocalStorage(); // lưu vào local storage
+
     getEle("btnDong").click(); //out ra
+
   }
 
 };

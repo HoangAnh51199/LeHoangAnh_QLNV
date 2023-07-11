@@ -39,7 +39,7 @@ function Validation() {
     };
 
     this.kiemtraDodaiKyTu = function (value, errorId, mess, min, max) {
-        if (min <= value.trim().length && value.trim().length <= max) {
+        if (min <= value.trim().length && value.trim().length <= max) { //trim() ___abc____ :chỉ lấy abc bỏ khoảng trắng
             //true
             getEle(errorId).innerHTML = "";
             getEle(errorId).style.display = "none";
@@ -71,7 +71,7 @@ function Validation() {
     };
 
     this.checkPattern = function (value, errorId, mess, letter) {
-        if (value.match(letter)) {
+        if (value.match(letter)) {//giong var letter nhưng nhập bên main 
             //
             //true
             getEle(errorId).innerHTML = "";
@@ -88,18 +88,18 @@ function Validation() {
     this.kiemtraMaNVTonTai = function (value, errorId, mess, listNV) {
         var isExist = false;
 
-        for (var i = 0; i < listSV.length; i++) { // ktra co ton tai hay ko
+        for (var i = 0; i < listNV.length; i++) { // ktra co ton tai hay ko
             var nv = listNV[i];
-            if (nv.taiKgoan === value) {
+            if (nv.taiKhoan === value) {
                 isExist = true;
                 break;
             }
         }
 
 
-        if (isExist) { // isexist  co ton tai la true
-
-            getEle(errorId).innerHTML = mess;
+        if (isExist) { // isexist  co ton tai  nghĩa là trùng 
+            //false
+            getEle(errorId).innerHTML = mess;//message
             getEle(errorId).style.display = "block";
             return false; // tra false
         } else {
@@ -113,7 +113,7 @@ function Validation() {
 
     };
 
-    this.kiemtraLuongCoban = function (value, errorId, mess, min, max) {
+    this.kiemtraLuongVaSoGioLam = function (value, errorId, mess, min, max) {
 
         if (min <= value && value <= max) {
             //true
@@ -129,19 +129,6 @@ function Validation() {
 
     };
 
-    this.kiemtraSoGioLam = function (value, errorId, mess, min, max) {
-        if (min <= value && value <= max) {
-            //true
-            getEle(errorId).innerHTML = "";
-            getEle(errorId).style.display = "none";
-            return true;
-        } else {
-            //false 
-            getEle(errorId).innerHTML = mess;
-            getEle(errorId).style.display = "block";
-            return false;
-        }
-    };
-
+  
 
 }

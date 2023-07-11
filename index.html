@@ -115,7 +115,7 @@
 							</div>
 							<div class="col-md-6 text-right">
 								<button class="btn btn-primary" id="btnThem" data-toggle="modal"
-									data-target="#myModal">Thêm nhân viên</button>
+									data-target="#myModal" onclick="nutMoFormNhapLieu()">Thêm nhân viên</button>
 							</div>
 						</div>
 					</div>
@@ -188,7 +188,7 @@
 				<!-- Modal body -->
 				<div class="modal-body">
 
-					<form role="form">
+					<form id="formNhap"role="form">
 
 						<div class="form-group">
 							<div class="input-group">
@@ -197,9 +197,13 @@
 								</div>
 								<input type="text" name="tk" id="tknv" class="form-control input-sm"
 									placeholder="Tài khoản">
-									
 							</div>
-							<div class="text-danger"> (*) vui lòng nhập tài khoản   </div>
+							
+							<div 
+							id="txtErrorTK" 
+							class="text-danger" 
+							style="display: none;">    
+							</div>
 
 							<span class="sp-thongbao" id="tbTKNV"> </span>
 						</div>
@@ -214,7 +218,7 @@
 							</div>
 
 							<div 
-							id="txtErrorTK" 
+							id="txtErrorHoTen" 
 							class="text-danger" 
 							style="display: none;">    
 							</div>
@@ -335,7 +339,7 @@
 
 				<!-- Modal footer -->
 				<div class="modal-footer" id="modal-footer">
-					<button id="btnThemNV" type="button" class="btn btn-success" onclick="themNhanVien()">Thêm người dùng</button>
+					<button id="btnThemNV"  type="button" class="btn btn-success" onclick="themNhanVien()">Thêm người dùng</button>
 					<button id="btnCapNhatNV" style="display: none" type="button" class="btn btn-success">Cập nhật</button>
 					<button id="btnDong" type="button" class="btn btn-danger" data-dismiss="modal">Đóng</button>
 				</div>
