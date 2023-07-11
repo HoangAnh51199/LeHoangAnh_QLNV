@@ -176,6 +176,9 @@ function nutMoFormNhapLieu() {
 
   getEle("tknv").disabled = false;// thoát block tài khoản phần input đang bị khóa xám 
   getEle("formNhap").reset();//reset form về ban đầu trống input
+  getEle("btnCapNhatNV").style.display = "none";
+  getEle("btnThemNV").style.display = "inline-block";
+
 }
 
 
@@ -204,6 +207,17 @@ function renderTable(data) {
   for (var i = 0; i < data.length; i++) {
     var nv = data[i];
 
+
+
+
+    //Fomart VN
+    var VND = new Intl.NumberFormat('VN-vn', {
+      //  style: 'currency',
+      //  currency: 'VND'
+    });
+
+    //
+
     content += ` <tr>
    
      <td>${nv.taiKhoan}</td>
@@ -211,7 +225,17 @@ function renderTable(data) {
      <td>${nv.email}</td>
      <td>${nv.ngayLam} </td>
      <td>${nv.chucVu} </td>
-     <td>${nv.tongLuong.toLocaleString('it-IT', { style: 'currency', currency: 'VND' })} </td>
+     
+     <td>
+     <div class="d-flex ">
+     
+     ${VND.format(nv.tongLuong)}
+     
+     <span style='font: -webkit-mini-control;
+    font-size: 25px;'>&#8363; </span>   
+      </div>
+      </td>
+  
      <td>${nv.loai}</td>
      <td>
      <button class="btn btn-info" onclick="suaNV('${nv.taiKhoan}')">Sửa</button>
