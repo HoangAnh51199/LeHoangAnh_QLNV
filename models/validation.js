@@ -113,6 +113,34 @@ function Validation() {
 
     };
 
+    this.kiemtraEmailTonTai = function (value, errorId, mess, listNV) {
+        var isExist = false;
+
+        for (var i = 0; i < listNV.length; i++) { // ktra co ton tai hay ko
+            var nv = listNV[i];
+            if (nv.email === value) {
+                isExist = true;
+                break;
+            }
+        }
+
+
+        if (isExist) { // isexist  co ton tai  nghĩa là trùng 
+            //false
+            getEle(errorId).innerHTML = mess;//message
+            getEle(errorId).style.display = "block";
+            return false; // tra false
+        } else {
+
+            //true
+            getEle(errorId).innerHTML = "";
+            getEle(errorId).style.display = "none";
+            return true;
+
+        }
+
+    };
+
     this.kiemtraLuongVaSoGioLam = function (value, errorId, mess, min, max) {
 
         if (min <= value && value <= max) {

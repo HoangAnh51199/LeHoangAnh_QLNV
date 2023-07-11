@@ -13,7 +13,7 @@ function getEle(id) {
 
 
 
-function layThongTinNV(isADD) { //thêm isADD :true là thêm data,false là cập nhật
+function layThongTinNV(isADD, isADDEmail) { //thêm isADD :true là thêm data,false là cập nhật
 
 
   /**
@@ -39,7 +39,7 @@ function layThongTinNV(isADD) { //thêm isADD :true là thêm data,false là c�
 
   if (isADD) {//ktra bien isADD true làm trong {} ,false bỏ qua
     //validation taiKhoan
-    isvalid &= validation.kiemtraRong(taiKhoan, "txtErrorTK", "(*) vui lòng nhập tài khoản") &&
+    isvalid &= validation.kiemtraRong(taiKhoan, "txtErrorTK", "(*) vui lòng không để trống ") &&
       validation.kiemtraDodaiKyTu(
         taiKhoan,
         "txtErrorTK",
@@ -53,8 +53,30 @@ function layThongTinNV(isADD) { //thêm isADD :true là thêm data,false là c�
         "(*) mã nhân viên đã tồn tại",
         dsnv.arr // biến list nv
       );
+
+
   }
 
+  if (isADDEmail) {
+    // validation email
+    isvalid &= validation.kiemtraRong(
+      email,
+      "txtErrorEmail",
+      "(*) vui lòng không để trống "
+    ) &&
+      validation.checkPattern(
+        email,
+        "txtErrorEmail",
+        "(*) vui lòng nhập email đúng dịnh dạng",
+        /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
+      ) &&
+      validation.kiemtraEmailTonTai(
+        email,
+        "txtErrorEmail",
+        "(*) Email đã tồn tại",
+        dsnv.arr
+      );
+  }
 
 
   //vd:isvalid = false kế tiếp true isvalid =false && true =false cuối cùng ,có 1 cái false thì ko nhân data nhanthongtinnhanvien 
@@ -63,7 +85,7 @@ function layThongTinNV(isADD) { //thêm isADD :true là thêm data,false là c�
   isvalid &= validation.kiemtraRong(
     tenNV,
     "txtErrorHoTen",
-    "(*) vui lòng nhập tên nhân viên"
+    "(*) vui lòng không để trống"
   ) &&
     validation.kiemtraChuoiKiTu(
       tenNV,
@@ -73,23 +95,12 @@ function layThongTinNV(isADD) { //thêm isADD :true là thêm data,false là c�
     );
 
 
-  isvalid &= validation.kiemtraRong(
-    email,
-    "txtErrorEmail",
-    "(*) vui lòng nhập email "
-  ) &&
-    validation.checkPattern(
-      email,
-      "txtErrorEmail",
-      "(*) vui lòng nhập email đúng dịnh dạng",
-      /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
-    );
 
 
   isvalid &= validation.kiemtraRong(
     matKhau,
     "txtErrorMatKhau",
-    "(*) vui lòng nhập mật khẩu"
+    "(*) vui lòng không để trống"
   ) &&
     validation.checkPattern(
       matKhau,
@@ -107,7 +118,7 @@ function layThongTinNV(isADD) { //thêm isADD :true là thêm data,false là c�
   isvalid &= validation.kiemtraRong(
     luongCoBan,
     "txtErrorLuongCB",
-    "(*) vui lòng nhập lương cơ bản"
+    "(*) vui lòng không để trống"
   ) &&
     validation.kiemtraLuongVaSoGioLam(
       luongCoBan,
@@ -127,7 +138,7 @@ function layThongTinNV(isADD) { //thêm isADD :true là thêm data,false là c�
   isvalid &= validation.kiemtraRong(
     gioLam,
     "txtErrorGioLam",
-    "(*) vui lòng nhập giờ làm"
+    "(*) vui lòng không để trống"
   ) &&
     validation.kiemtraLuongVaSoGioLam(
       gioLam,
@@ -140,7 +151,7 @@ function layThongTinNV(isADD) { //thêm isADD :true là thêm data,false là c�
 
 
 
-
+  // phần nhập isvalid đúng tất cả thì tạo đối tượng
 
   if (isvalid) { //true tạo đối tượng 
 
@@ -170,7 +181,7 @@ function layThongTinNV(isADD) { //thêm isADD :true là thêm data,false là c�
 
   return null; //khi validatin sai
 
-}
+};
 
 function nutMoFormNhapLieu() {
 
@@ -178,18 +189,26 @@ function nutMoFormNhapLieu() {
   getEle("formNhap").reset();//reset form về ban đầu trống input
   getEle("btnCapNhatNV").style.display = "none";
   getEle("btnThemNV").style.display = "inline-block";
-
-}
+  getEle("txtErrorTK").style.display = "none";
+  getEle("txtErrorHoTen").style.display = "none";
+  getEle("txtErrorEmail").style.display = "none";
+  getEle("txtErrorMatKhau").style.display = "none";
+  getEle("txtErrorNgayLam").style.display = "none";
+  getEle("txtErrorLuongCB").style.display = "none";
+  getEle("txtErrorChucVu").style.display = "none";
+  getEle("txtErrorGioLam").style.display = "none";
+  // reset validiton khi mở form
+};
 
 
 
 /**
  * Them NV
  */
-function themNhanVien() {
+function themNhanVien() { //Bấm vào nút Thêm nhân viên sẽ kiểm tra valid của tất cả
 
 
-  var nv = layThongTinNV(true); //true cho biến isADD sẽ thực hiên validation
+  var nv = layThongTinNV(true, true); //true cho biến isADD ,isADDEmail  sẽ thực hiên validation khi truyền true true vào 2 biến 
   console.log(nv);
   if (nv) { // khác null hoặc có data dom  thì thực hiện
     dsnv.themNV(nv);
@@ -199,7 +218,7 @@ function themNhanVien() {
     setLocalStorage();//lưu danh sach xuong local storage
     getEle("btnDong").click(); //out form ra 
   }
-}
+};
 
 
 function renderTable(data) {
@@ -245,7 +264,7 @@ function renderTable(data) {
     `;
   }
   getEle("tableDanhSach").innerHTML = content;
-}
+};
 
 
 /**
@@ -259,7 +278,7 @@ function xoaNV(taiKhoan) {
   console.log(dsnv.arr); //tìm dc vi tri xoa và thực hien xóa 
   renderTable(dsnv.arr); // render lại màn hình sau xóa
   setLocalStorage(); // lưu data sau khi xóa trên localstorage
-}
+};
 
 function suaNV(taikhoan) {
   //console.log(taikhoan);
@@ -288,15 +307,36 @@ function suaNV(taikhoan) {
     getEle("btnThemNV").style.display = "none";
   }
 
-}
+};
+
+
+//Hàm trả về email của tài khoản đang chỉnh sửa
+function timTKEmail() {
+  var taiKhoan = getEle('tknv').value; // get value tkhoan nvien
+  var taiKhoanhienTai = dsnv.layThongTinChiTietNV(taiKhoan);
+
+  return taiKhoanhienTai.email; //lay dc tk hien tại cóemail
+
+};
 
 /**
  * cập nhật 
+ * //Khi email đang nhập giống email của tài khoản đang sửa thì không kiểm tra validEmail, 
+ * khi email đang nhập khác email của tài khoản đang sửa thì kiểm tra validEmail
  */
 
 getEle("btnCapNhatNV").onclick = function () {
   //lấy thông tin user
-  var nv = layThongTinNV(false);//lấy lại data mới thông tin mới sửa của nhan vien đó ,false của biến isADD bỏ qua validation ktra ký tự
+  // var nv = layThongTinNV(false, false);//lấy lại data mới thông tin mới sửa của nhan vien đó ,false của biến isADD bỏ qua validation ktra ký tự tai khoan ,email
+  console.log(timTKEmail);
+  var TKEmailHienTai = timTKEmail();
+  var inputEmail = getEle("email").value; // lay value tu o email mới nhập  
+  if (inputEmail === TKEmailHienTai) {//
+    var nv = layThongTinNV(false, false); // false validattion email đễ ko xét email đã tồn tại(đang cập nhật) => tiếp tục code cập nhật
+  } else {
+    var nv = layThongTinNV(false, true);// true để validation email hoạt động xét email đã tồn tại chưa
+  }
+
   if (nv) { // khác null hoặc có data dom thì thực hiện
     console.log(nv); // xem thông tin mới sửa lại
     dsnv.capNhatNV(nv)  //functon capnhat ben dsnv.js
